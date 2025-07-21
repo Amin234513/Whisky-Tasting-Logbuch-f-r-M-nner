@@ -27,9 +27,6 @@ body {
     background-size: cover;
     font-family: 'Lora', serif;
     color: #e8e0cd;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
 }
 h1, h2, h3, h4 {
     font-family: 'Cinzel', serif;
@@ -43,7 +40,6 @@ h1, h2, h3, h4 {
     border: 12px double var(--whisky-gold);
     box-shadow: 0 0 30px rgba(0,0,0,0.9);
     padding: 2rem;
-    min-height: 100vh;
 }
 .st-emotion-cache-1y4p8pa {
     background: url('https://i.imgur.com/GkzMhWn.png') no-repeat bottom right;
@@ -70,7 +66,6 @@ h1, h2, h3, h4 {
     padding: 20px;
     margin: 15px 0;
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    color: #e8e0cd;
 }
 .gold-border {
     border: 2px solid var(--whisky-gold) !important;
@@ -266,6 +261,7 @@ if not st.session_state.whisky_log.empty:
         height=400,
         use_container_width=True
     )
+    
 else:
     st.info("ℹ️ Noch keine Einträge. Fülle dein erstes Tasting-Formular aus!")
 
@@ -275,40 +271,57 @@ with st.expander("📚 Whisky-Wissen für Gentlemen", expanded=True):
     
     with tab1:
         st.markdown("""
-**Schottische Regionen:**
-- *Islay:* Torfig, rauchig, medizinisch (Laphroaig, Ardbeg)
-- *Highlands:* Fruchtig, malzig, ausgewogen (Glenmorangie, Oban)
-- *Speyside:* Süß, elegant, komplex (Macallan, Glenfiddich)
+        **Schottische Regionen:**
+        - *Islay:* Torfig, rauchig, medizinisch (Laphroaig, Ardbeg)
+        - *Highlands:* Fruchtig, malzig, ausgewogen (Glenmorangie, Oban)
+        - *Speyside:* Süß, elegant, komplex (Macallan, Glenfiddich)
+        
+        **International:**
+        - *Japan:* Präzise, rein, umami (Yamazaki, Hibiki)
+        - *USA:* Vanille, Karamell, kräftig (Bulleit, Woodford Reserve)
+        """)
 
-**International:**
-- *Japan:* Präzise, rein, umami (Yamazaki, Hibiki)
-- *USA:* Vanille, Karamell, kräftig (Bulleit, Woodford Reserve)
-""")
     with tab2:
         st.markdown("""
-**Professionelles Tasting:**
-1. **Farbe:** Gegen das Licht halten - Alter anzeigend
-2. **Nase:** Erst aus Distanz, dann näher - Mehrfach riechen
-3. **Geschmack:** Kleiner Schluck, im Mund bewegen
-4. **Abgang:** Länge und Entwicklung notieren
+        **Professionelles Tasting:**
+        1. **Farbe:** Gegen das Licht halten - Alter anzeigend
+        2. **Nase:** Erst aus Distanz, dann näher - Mehrfach riechen
+        3. **Geschmack:** Kleiner Schluck, im Mund bewegen
+        4. **Abgang:** Länge und Entwicklung notieren
+        
+        **Zugabe Wasser:** 1-2 Tropfen öffnen Aromen
+        """)
 
-**Zugabe Wasser:** 1-2 Tropfen öffnen Aromen
-""")
     with tab3:
         st.markdown("""
-**Ideale Lagerung:**
-- Aufrecht stehend (Kork trocknet sonst aus)
-- Zimmertemperatur (15-20°C)
-- Vor Sonnenlicht schützen
-- Nach Öffnung innerhalb 6 Monate verbrauchen
-
-**Kein Gefrierschrank!** - Zerstört Aromen
-""")
+        **Ideale Lagerung:**
+        - Aufrecht stehend (Kork trocknet sonst aus)
+        - Zimmertemperatur (15-20°C)
+        - Vor Sonnenlicht schützen
+        - Nach Öffnung innerhalb 6 Monate verbrauchen
+        
+        **Kein Gefrierschrank!** - Zerstört Aromen
+        """)
 
 # ===== EXPORT =====
 st.markdown("---")
 if 'whisky_log' in st.session_state and not st.session_state.whisky_log.empty:
     df = st.session_state.whisky_log
+    csv_data = df.to_csv(index=False).encode('utf-8')
     st.download_button(
         label="📥 Logbuch als CSV exportieren",
-        data=df.to_csv
+        data=csv_data,
+        file_name='whisky_logbuch.csv',
+        mime='text/csv',
+        use_container_width=True
+    )
+else:
+    st.info("ℹ️ Keine Daten zum Exportieren vorhanden.")
+
+# ===== FOOTER =====
+st.markdown("""
+<div style="text-align:center; margin-top:50px; padding:20px; border-top:1px solid #d4af37">
+    <p>🧊 Serviert bei Raumtemperatur - Mit oder ohne Tropfen Wasser</p>
+    <p>🥃 Genieße verantwortungsvoll - In Maßen, nicht in Massen</p>
+</div>
+""", unsafe_allow_html=True)
