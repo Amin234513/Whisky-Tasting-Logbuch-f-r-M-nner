@@ -11,22 +11,19 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS mit Lederoptik und Goldakzenten
+# Einfacher, eleganter Hintergrund in warmem Braun
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:wght@400;700&display=swap');
 :root {
     --whisky-gold: #d4af37;
     --leather-brown: #3d291a;
-    --smoke-gray: #2c2c2c;  
-    --glass-amber: #b8860b;
+    --text-color: #e8e0cd;
 }
 body {
-    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), 
-                url('https://i.imgur.com/5Qz4Y7b.jpg');
-    background-size: cover;
+    background-color: var(--leather-brown);
     font-family: 'Lora', serif;
-    color: #e8e0cd;
+    color: var(--text-color);
 }
 h1, h2, h3, h4 {
     font-family: 'Cinzel', serif;
@@ -35,22 +32,18 @@ h1, h2, h3, h4 {
     letter-spacing: 1px;
 }
 .stApp {
-    background: rgba(61, 41, 26, 0.85) !important;
-    backdrop-filter: blur(4px);
-    border: 12px double var(--whisky-gold);
-    box-shadow: 0 0 30px rgba(0,0,0,0.9);
+    background: rgba(61, 41, 26, 0.95) !important;
     padding: 2rem;
-}
-.st-emotion-cache-1y4p8pa {
-    background: url('https://i.imgur.com/GkzMhWn.png') no-repeat bottom right;
-    background-size: 30%;
+    border-radius: 10px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.7);
 }
 .stButton button {
     background: linear-gradient(180deg, var(--leather-brown), #1a1209) !important;
     border: 1px solid var(--whisky-gold) !important;
-    border-radius: 2px !important;
+    border-radius: 4px !important;
     font-family: 'Cinzel' !important;
     letter-spacing: 1.5px;
+    color: var(--text-color) !important;
     transition: all 0.3s ease !important;
 }
 .stButton button:hover {
@@ -59,32 +52,12 @@ h1, h2, h3, h4 {
     box-shadow: 0 0 15px var(--whisky-gold);
 }
 .leather-card {
-    background: url('https://i.imgur.com/XtQq7Rz.jpg') !important;
-    background-size: cover !important;
+    background: #4b3925;
     border: 1px solid var(--whisky-gold);
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 20px;
     margin: 15px 0;
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-}
-.gold-border {
-    border: 2px solid var(--whisky-gold) !important;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-}
-.smoke-effect {
-    position: relative;
-    overflow: hidden;
-}
-.smoke-effect::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background: url('https://i.imgur.com/8ZR0XgQ.png') center/cover;
-    opacity: 0.1;
-    pointer-events: none;
 }
 </style>
 """, unsafe_allow_html=True)
