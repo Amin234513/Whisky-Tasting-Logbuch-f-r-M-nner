@@ -1,7 +1,6 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-import numpy as np
 from datetime import datetime
 
 # ===== HERRSCHAFTLICHES DESIGN =====
@@ -22,18 +21,29 @@ st.markdown("""
     --smoke-gray: #2c2c2c;  
     --glass-amber: #b8860b;
 }
-.stApp {
-    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), 
-                url('https://i.imgur.com/5Qz4Y7b.jpg') no-repeat center center fixed;
+body {
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), 
+                url('https://i.imgur.com/5Qz4Y7b.jpg');
     background-size: cover;
     font-family: 'Lora', serif;
     color: #e8e0cd;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
 }
 h1, h2, h3, h4 {
     font-family: 'Cinzel', serif;
     color: var(--whisky-gold) !important;
     text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     letter-spacing: 1px;
+}
+.stApp {
+    background: rgba(61, 41, 26, 0.85) !important;
+    backdrop-filter: blur(4px);
+    border: 12px double var(--whisky-gold);
+    box-shadow: 0 0 30px rgba(0,0,0,0.9);
+    padding: 2rem;
+    min-height: 100vh;
 }
 .st-emotion-cache-1y4p8pa {
     background: url('https://i.imgur.com/GkzMhWn.png') no-repeat bottom right;
@@ -60,6 +70,7 @@ h1, h2, h3, h4 {
     padding: 20px;
     margin: 15px 0;
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    color: #e8e0cd;
 }
 .gold-border {
     border: 2px solid var(--whisky-gold) !important;
@@ -89,9 +100,6 @@ if 'whisky_log' not in st.session_state:
         'Datum', 'Name', 'Destillerie', 'Alter', 'Region', 'Typ', 'Preis', 
         'Farbe', 'Nase', 'Geschmack', 'Abgang', 'Gesamt', 'Notizen', 'Bewertung'
     ])
-
-# Hier df immer definieren, auch wenn leer
-df = st.session_state.whisky_log
 
 # ===== DASHBOARD-KOPF =====
 st.title("🥃 Gentlemen's Whisky Journal")
@@ -162,8 +170,9 @@ with st.expander("✍️ Neuen Whisky eintragen", expanded=True):
 st.markdown("---")
 st.header("📊 Whisky-Analysen")
 
-if not df.empty:
-    # df ist bereits definiert
+if not st.session_state.whisky_log.empty:
+    df = st.session_state.whisky_log
+    
     # Top-Bewertungen
     top3 = df.nlargest(3, 'Bewertung')
     col1, col2, col3 = st.columns(3)
@@ -257,7 +266,6 @@ if not df.empty:
         height=400,
         use_container_width=True
     )
-    
 else:
     st.info("ℹ️ Noch keine Einträge. Fülle dein erstes Tasting-Formular aus!")
 
@@ -267,4 +275,40 @@ with st.expander("📚 Whisky-Wissen für Gentlemen", expanded=True):
     
     with tab1:
         st.markdown("""
-        **Schottische Regionen
+**Schottische Regionen:**
+- *Islay:* Torfig, rauchig, medizinisch (Laphroaig, Ardbeg)
+- *Highlands:* Fruchtig, malzig, ausgewogen (Glenmorangie, Oban)
+- *Speyside:* Süß, elegant, komplex (Macallan, Glenfiddich)
+
+**International:**
+- *Japan:* Präzise, rein, umami (Yamazaki, Hibiki)
+- *USA:* Vanille, Karamell, kräftig (Bulleit, Woodford Reserve)
+""")
+    with tab2:
+        st.markdown("""
+**Professionelles Tasting:**
+1. **Farbe:** Gegen das Licht halten - Alter anzeigend
+2. **Nase:** Erst aus Distanz, dann näher - Mehrfach riechen
+3. **Geschmack:** Kleiner Schluck, im Mund bewegen
+4. **Abgang:** Länge und Entwicklung notieren
+
+**Zugabe Wasser:** 1-2 Tropfen öffnen Aromen
+""")
+    with tab3:
+        st.markdown("""
+**Ideale Lagerung:**
+- Aufrecht stehend (Kork trocknet sonst aus)
+- Zimmertemperatur (15-20°C)
+- Vor Sonnenlicht schützen
+- Nach Öffnung innerhalb 6 Monate verbrauchen
+
+**Kein Gefrierschrank!** - Zerstört Aromen
+""")
+
+# ===== EXPORT =====
+st.markdown("---")
+if 'whisky_log' in st.session_state and not st.session_state.whisky_log.empty:
+    df = st.session_state.whisky_log
+    st.download_button(
+        label="📥 Logbuch als CSV exportieren",
+        data=df.to_csv
