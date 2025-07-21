@@ -22,9 +22,9 @@ st.markdown("""
     --smoke-gray: #2c2c2c;  
     --glass-amber: #b8860b;
 }
-body {
-    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), 
-                url('https://i.imgur.com/5Qz4Y7b.jpg');
+.stApp {
+    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), 
+                url('https://i.imgur.com/5Qz4Y7b.jpg') no-repeat center center fixed;
     background-size: cover;
     font-family: 'Lora', serif;
     color: #e8e0cd;
@@ -34,13 +34,6 @@ h1, h2, h3, h4 {
     color: var(--whisky-gold) !important;
     text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     letter-spacing: 1px;
-}
-.stApp {
-    background: rgba(61, 41, 26, 0.85) !important;
-    backdrop-filter: blur(4px);
-    border: 12px double var(--whisky-gold);
-    box-shadow: 0 0 30px rgba(0,0,0,0.9);
-    padding: 2rem;
 }
 .st-emotion-cache-1y4p8pa {
     background: url('https://i.imgur.com/GkzMhWn.png') no-repeat bottom right;
@@ -96,6 +89,9 @@ if 'whisky_log' not in st.session_state:
         'Datum', 'Name', 'Destillerie', 'Alter', 'Region', 'Typ', 'Preis', 
         'Farbe', 'Nase', 'Geschmack', 'Abgang', 'Gesamt', 'Notizen', 'Bewertung'
     ])
+
+# Hier df immer definieren, auch wenn leer
+df = st.session_state.whisky_log
 
 # ===== DASHBOARD-KOPF =====
 st.title("🥃 Gentlemen's Whisky Journal")
@@ -166,9 +162,8 @@ with st.expander("✍️ Neuen Whisky eintragen", expanded=True):
 st.markdown("---")
 st.header("📊 Whisky-Analysen")
 
-if not st.session_state.whisky_log.empty:
-    df = st.session_state.whisky_log
-    
+if not df.empty:
+    # df ist bereits definiert
     # Top-Bewertungen
     top3 = df.nlargest(3, 'Bewertung')
     col1, col2, col3 = st.columns(3)
@@ -272,52 +267,4 @@ with st.expander("📚 Whisky-Wissen für Gentlemen", expanded=True):
     
     with tab1:
         st.markdown("""
-        **Schottische Regionen:**
-        - *Islay:* Torfig, rauchig, medizinisch (Laphroaig, Ardbeg)
-        - *Highlands:* Fruchtig, malzig, ausgewogen (Glenmorangie, Oban)
-        - *Speyside:* Süß, elegant, komplex (Macallan, Glenfiddich)
-        
-        **International:**
-        - *Japan:* Präzise, rein, umami (Yamazaki, Hibiki)
-        - *USA:* Vanille, Karamell, kräftig (Bulleit, Woodford Reserve)
-        """)
-
-    with tab2:
-        st.markdown("""
-        **Professionelles Tasting:**
-        1. **Farbe:** Gegen das Licht halten - Alter anzeigend
-        2. **Nase:** Erst aus Distanz, dann näher - Mehrfach riechen
-        3. **Geschmack:** Kleiner Schluck, im Mund bewegen
-        4. **Abgang:** Länge und Entwicklung notieren
-        
-        **Zugabe Wasser:** 1-2 Tropfen öffnen Aromen
-        """)
-
-    with tab3:
-        st.markdown("""
-        **Ideale Lagerung:**
-        - Aufrecht stehend (Kork trocknet sonst aus)
-        - Zimmertemperatur (15-20°C)
-        - Vor Sonnenlicht schützen
-        - Nach Öffnung innerhalb 6 Monate verbrauchen
-        
-        **Kein Gefrierschrank!** - Zerstört Aromen
-        """)
-
-# ===== EXPORT =====
-st.markdown("---")
-st.download_button(
-    label="📥 Logbuch als PDF exportieren",
-    data=df.to_csv().encode('utf-8') if not df.empty else "No data".encode(),
-    file_name="whisky_logbuch.csv",
-    mime="text/csv",
-    use_container_width=True
-)
-
-# ===== FOOTER =====
-st.markdown("""
-<div style="text-align:center; margin-top:50px; padding:20px; border-top:1px solid #d4af37">
-    <p>🧊 Serviert bei Raumtemperatur - Mit oder ohne Tropfen Wasser</p>
-    <p>🥃 Genieße verantwortungsvoll - In Maßen, nicht in Massen</p>
-</div>
-""", unsafe_allow_html=True)
+        **Schottische Regionen
