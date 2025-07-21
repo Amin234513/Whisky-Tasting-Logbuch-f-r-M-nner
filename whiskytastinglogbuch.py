@@ -19,7 +19,7 @@ st.markdown("""
 :root {
     --whisky-gold: #d4af37;
     --leather-brown: #3d291a;
-    --smoke-gray: #2c2c2c;
+    --smoke-gray: #2c2c2c;  
     --glass-amber: #b8860b;
 }
 body {
@@ -196,7 +196,8 @@ if not st.session_state.whisky_log.empty:
     fig1.update_traces(fill='toself', line=dict(width=3))
     fig1.update_layout(
         polar=dict(
-            radialaxis=dict(visible=True, range=[0,10]),
+            radialaxis=dict(visible=True, range=[0,10])
+        ),
         showlegend=False,
         paper_bgcolor='rgba(0,0,0,0)',
         font=dict(color='#e8e0cd')
@@ -252,7 +253,7 @@ if not st.session_state.whisky_log.empty:
             bgcolor='rgba(61, 41, 26, 0.7)'
         )
     )
-    st.plotly_chart(f3, use_container_width=True)
+    st.plotly_chart(fig3, use_container_width=True)
     
     # Vollständiges Logbuch
     st.subheader("📜 Vollständiges Tasting-Log")
@@ -280,7 +281,7 @@ with st.expander("📚 Whisky-Wissen für Gentlemen", expanded=True):
         - *Japan:* Präzise, rein, umami (Yamazaki, Hibiki)
         - *USA:* Vanille, Karamell, kräftig (Bulleit, Woodford Reserve)
         """)
-        
+
     with tab2:
         st.markdown("""
         **Professionelles Tasting:**
@@ -291,7 +292,7 @@ with st.expander("📚 Whisky-Wissen für Gentlemen", expanded=True):
         
         **Zugabe Wasser:** 1-2 Tropfen öffnen Aromen
         """)
-        
+
     with tab3:
         st.markdown("""
         **Ideale Lagerung:**
